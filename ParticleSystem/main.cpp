@@ -5,8 +5,8 @@
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
-#include "Particle.h"
-#include "ParticleSystem.h"
+#include "VehicleSystem.h"
+#include "MyMath.h"
 using namespace sf;
 
 RenderWindow window;
@@ -20,9 +20,7 @@ int main()
 	texture2.loadFromFile("flame2.png");
 	texture3.loadFromFile("flame3.png");
 	window.create(sf::VideoMode(800, 600), "Particle System");
-	ParticleSystem firstSystem(1, Vector2f(400, 300), &texture1, 1);
-	ParticleSystem secondSystem(4, Vector2f(200, 300), &texture2, 0.5);
-	ParticleSystem thirdSystem(8, Vector2f(600, 300), &texture3, 1.5);
+	VehicleSystem firstSystem(1, Vector2f(400, 300), &texture1, 1);
 	while (window.isOpen())
 	{
 		float dt = clock.restart().asSeconds();
@@ -36,10 +34,6 @@ int main()
 		window.clear();
 		firstSystem.update(dt);
 		firstSystem.draw(&window);
-		secondSystem.update(dt);
-		secondSystem.draw(&window);
-		thirdSystem.update(dt);
-		thirdSystem.draw(&window);
 		window.display();
 	}
 

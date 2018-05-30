@@ -1,7 +1,8 @@
-#include "ParticleSystem.h"
+#include "VehicleSystem.h"
+#include "MyMath.h"
 
 
-void ParticleSystem::update(float dt) {
+void VehicleSystem::update(float dt) {
 	if (Keyboard::isKeyPressed(Keyboard::Up) && !upPressed) {
 		upPressed = true;
 		this->emissionRate += 1;
@@ -17,50 +18,35 @@ void ParticleSystem::update(float dt) {
 		downPressed = false;
 	}
 	int particleCounter = 0;
-	for (int i = 0; i < 10000; i++) {
-		if (particles[i]->lifeStatus) {
-			particles[i]->update(dt);
-		}
-		else {
-			if (particleCounter < emissionRate) {
-				Vector2f size = Vector2f(45, 45);
-				particles[i]->resetParticle(emissionPoint, getRandomNumberUpto(4), getRandomNumberUpto(150), Vector2f(randomNumberAroundZero(angleMultiplier), -1), true, texture, size);
-				particleCounter++;
-			}
-		}
+	for (int i = 0; i < 100; i++) {
+		particles[i]->update(dt);
 	}
 }
 
-void ParticleSystem::draw(RenderWindow* window) {
-	for (int i = 0; i < 10000; i++) {
-		if (particles[i]->lifeStatus) {
+void VehicleSystem::draw(RenderWindow* window) {
+	for (int i = 0; i < 100; i++) {
 			particles[i]->draw(window);
 		}
 	}
-}
 
-ParticleSystem::ParticleSystem(int emissionRate, Vector2f emissionPoint, Texture* texture, float angleMultiplier)
+VehicleSystem::VehicleSystem(int emissionRate, Vector2f emissionPoint, Texture* texture, float angleMultiplier)
 {
-	this->emissionRate = emissionRate;
-	this->emissionPoint = emissionPoint;
-	this->texture = texture;
-	this->angleMultiplier = angleMultiplier;
-	for (int i=0; i < 10000; i++) {
-		Particle* p = new Particle();
+	for (int i=0; i < 100; i++) {
+		Vehicle* p = new Vehicle(this, Vector2f(100+ i*10, 100 + i * 10));
 		particles[i] = p;
 	}
 }
 
 
-ParticleSystem::~ParticleSystem()
+VehicleSystem::~VehicleSystem()
 {
 }
 
-float ParticleSystem::randomNumberAroundZero(float number) {
+float VehicleSystem::randomNumberAroundZero(float number) {
 	return (-number + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (number * 2))));
 }
 
-float ParticleSystem::getRandomNumberUpto(float number) {
+float VehicleSystem::getRandomNumberUpto(float number) {
 	float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 	return r * number;
 }
